@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dividir Texto en Archivos en 6mil caracteres</title>
+</head>
+<body>
+    <h1>Dividir Texto en Archivos De 6 Mil Caracteres</h1>
+    <h2>¿Cual es la utilidad de esta función?</h2>
+    <p>He estado leyendo algunos libros y como me ha dado pereza llevarlos en el bus me he puesto a pasarlos a audiolibros<br>
+       así que he creado esta función en html y javascript de manera sencilla para utilizarlo con la pagina de audios <a href="https://ttsmaker.com/es" target="_blank">ttsmaker.com</a><br>
+       por mi parte recomiendo las voces de 6 mil a 8 mil caracteres pues ofrecen una voz parecida a la latinoamericana, espero que disfrutes y si lo modificas me avisas. 
+       </p> 
+    <textarea id="texto" rows="10" cols="50" placeholder="Ingresa tu texto aquí" oninput="actualizarContador()"></textarea>
+    <div id="contador">Caracteres ingresados: 0</div>
+    <br>
+    <button onclick="dividirTexto()">Dividir Texto</button>
+
+    <script>
+        function actualizarContador() {
+            const texto = document.getElementById("texto").value;
+            const contador = document.getElementById("contador");
+            contador.textContent = `Caracteres ingresados: ${texto.length}`;
+        }
+
+        function dividirTexto() {
+            const texto = document.getElementById("texto").value;
+            const caracteresPorArchivo = 6000;
+            let archivoActual = 1;
+            let contenidoArchivo = '';
+            
+            for (let i = 0; i < texto.length; i++) {
+                contenidoArchivo += texto[i];
+                
+                if (contenidoArchivo.length >= caracteresPorArchivo || i === texto.length - 1) {
+                    const blob = new Blob([contenidoArchivo], { type: 'text/plain' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `archivo${archivoActual}.txt`;
+                    a.textContent = `Descargar archivo ${archivoActual}`;
+                    document.body.appendChild(a);
+                    document.body.appendChild(document.createElement('br'));
+                    
+                    contenidoArchivo = '';
+                    archivoActual++;
+                }
+            }
+        }
+    </script>
+</body>
+<footer>
+    <p>Creado con ❤️ Roberto Carlos Yat </p>
+  </footer>
+</html>
